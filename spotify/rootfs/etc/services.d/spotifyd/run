@@ -9,6 +9,7 @@ declare name
 declare password
 declare username
 declare cache_size_limit
+declare cache_path
 declare disable_audio_cache
 declare device_type
 declare backend
@@ -38,14 +39,20 @@ if bashio::config.has_value 'username'; then
     options+=(--password "${password}")
 fi
 
-# Cache size limit
-cache_size_limit=$(bashio::config 'cache-size-limit')
-if [[ "$cache_size_limit" =~ ^[0-9]+[KMG]?$ ]]; then
-    options+=(--cache-size-limit "${cache_size_limit}")
-else
-    bashio::log.warning "Invalid cache-size-limit format, using default of 1M"
-    options+=(--cache-size-limit "1M")
+# Cache path and size limit
+if bashio::config.has_value 'cache-size-limit'; then
+    cache_size_limit=$(bashio::config 'cache-size-limit')
+    if [[ "$cache_size_limit" =~ ^[0-9]+[KMG]?$ ]]; then
+        options+=(--cache-size-limit "${cache_size_limit}")
+    else
+        bashio::log.warning "Invalid cache-size-limit, using default of 1M"
+        options+=(--cache-size-limit "1M")
+    fi
 fi
+
+# Set cache path to enable cache-size-limit
+cache_path="/tmp/librespot_cache"
+options+=(--cache "${cache_path}")
 
 # Disable audio cache
 if bashio::config.true 'disable-audio-cache'; then
@@ -54,6 +61,9 @@ fi
 
 # Device type
 device_type=$(bashio::config 'device-type')
+if [[ -z "${device_type}" ]]; then
+    device_type="speaker" # Default to "speaker" if not provided
+fi
 options+=(--device-type "${device_type}")
 
 # Backend
