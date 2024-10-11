@@ -14,10 +14,10 @@ init: false
 options:
   name: Home Assistant
   bitrate: 160
-  cache-size-limit: 0
+  cache-size-limit: 1M
   disable-audio-cache: false
   device-type: speaker
-  backend: auto
+  backend: pulseaudio
   device: default
   format: S16
   dither: auto
@@ -30,7 +30,7 @@ schema:
   bitrate: list(96|160|320)
   username: str?
   password: password?
-  cache-size-limit: int
+  cache-size-limit: str
   disable-audio-cache: bool
   device-type: list(computer|tablet|smartphone|speaker|tv|avr|stb|audiodongle|gameconsole|castaudio|castvideo|automobile|smartwatch|chromebook|carthing|homething)
   backend: str
