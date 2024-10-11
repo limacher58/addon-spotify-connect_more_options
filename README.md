@@ -1,4 +1,4 @@
-# Home Assistant Community Add-on: Spotify Connect
+# Home Assistant Community Add-on: Spotify Connect - More Options
 
 [![GitHub Release][releases-shield]][releases]
 ![Project Stage][project-stage-shield]
