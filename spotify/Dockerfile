@@ -8,28 +8,30 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3003
 RUN \
     apk add --no-cache --virtual .build-dependencies \
-        build-base=0.5-r3 \
-        cargo=1.78.0-r0 \
-        git=2.45.2-r0 \
-        protobuf-dev=24.4-r1 \
-        pulseaudio-dev=17.0-r0 \
+        build-base \
+        cargo \
+        git \
+        protobuf-dev \
+        pulseaudio-dev \
         cmake \
-        rust-bindgen \
         clang-dev \
     \
     && apk add --no-cache \
-        pulseaudio=17.0-r0 \
+        pulseaudio \
     \
+    # Install rust-bindgen using cargo
+    && cargo install bindgen \
+    \
+    # Install librespot from the stable release tag
     && cargo install \
         --locked \
         --git https://github.com/librespot-org/librespot.git \
-        --branch dev \
+        --tag v0.4.0 \ # Replace v0.4.0 with the desired stable release tag
         --no-default-features \
         --features pulseaudio-backend \
         --root /usr \
         --bin librespot \
-        --verbose \ 
-        -- librespot \
+        --verbose \
     \
     && apk del --no-cache --purge .build-dependencies \
     && rm -fr \
