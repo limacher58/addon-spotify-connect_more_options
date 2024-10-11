@@ -10,6 +10,7 @@ RUN \
     apk add --no-cache --virtual .build-dependencies \
         build-base \
         cargo \
+        rust \
         git \
         protobuf-dev \
         pulseaudio-dev \
@@ -18,10 +19,6 @@ RUN \
     \
     && apk add --no-cache \
         pulseaudio \
-    \
-    # Install Rust toolchain dependencies to compile the project
-    && rustup default stable \
-    && rustup component add rustfmt \
     \
     # Install librespot from the stable release tag
     && cargo install --locked --git https://github.com/librespot-org/librespot.git --tag v0.4.2 --no-default-features --features pulseaudio-backend --root /usr --bin librespot --verbose \
