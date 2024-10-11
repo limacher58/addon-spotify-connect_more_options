@@ -23,15 +23,7 @@ RUN \
     && cargo install bindgen \
     \
     # Install librespot from the stable release tag
-    && cargo install \
-        --locked \
-        --git https://github.com/librespot-org/librespot.git \
-        --tag v0.4.0 \ # Replace v0.4.0 with the desired stable release tag
-        --no-default-features \
-        --features pulseaudio-backend \
-        --root /usr \
-        --bin librespot \
-        --verbose \
+    && cargo install --locked --git https://github.com/librespot-org/librespot.git --tag v0.4.0 --no-default-features --features pulseaudio-backend --root /usr --bin librespot --verbose \
     \
     && apk del --no-cache --purge .build-dependencies \
     && rm -fr \
