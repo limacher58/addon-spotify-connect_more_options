@@ -1,4 +1,4 @@
-# Home Assistant Community Add-on: Spotify Connect
+# Home Assistant Community Add-on: Spotify Connect - David
 
 The Home Assistant Spotify Connect add-on allows you to use your device,
 running Home Assistant, to play your Spotify music. This add-on uses the
