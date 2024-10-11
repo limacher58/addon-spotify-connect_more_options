@@ -22,19 +22,22 @@ declare autoplay
 bashio::log.info 'Starting the Spotify daemon...'
 
 # Bitrate
-options+=(--bitrate "$(bashio::config 'bitrate')")
+if bashio::config.has_value 'bitrate'; then
+    bitrate=$(bashio::config 'bitrate')
+    options+=(--bitrate "${bitrate}")
+fi
 
 # Device name
-name=$(bashio::config 'name')
-options+=(--name "${name}")
+if bashio::config.has_value 'name'; then
+    name=$(bashio::config 'name')
+    options+=(--name "${name}")
+fi
 
 # Username / password
 if bashio::config.has_value 'username'; then
     bashio::config.require.password
-
     username=$(bashio::config 'username')
     password=$(bashio::config 'password')
-
     options+=(--username "${username}")
     options+=(--password "${password}")
 fi
@@ -42,7 +45,12 @@ fi
 # Cache size limit
 if bashio::config.has_value 'cache-size-limit'; then
     cache_size_limit=$(bashio::config 'cache-size-limit')
-    options+=(--cache-size-limit "${cache_size_limit}")
+    if [[ "$cache_size_limit" =~ ^[0-9]+[KMG]?$ ]]; then
+        options+=(--cache-size-limit "${cache_size_limit}")
+    else
+        bashio::log.warning "Invalid cache-size-limit, using default of 1M"
+        options+=(--cache-size-limit "1M")
+    fi
 fi
 
 # Disable audio cache
@@ -83,7 +91,12 @@ fi
 # Initial volume
 if bashio::config.has_value 'initial-volume'; then
     initial_volume=$(bashio::config 'initial-volume')
-    options+=(--initial-volume "${initial_volume}")
+    if [[ "$initial_volume" =~ ^[0-9]+$ ]]; then
+        options+=(--initial-volume "${initial_volume}")
+    else
+        bashio::log.warning "Invalid initial-volume, using default of 50"
+        options+=(--initial-volume "50")
+    fi
 fi
 
 # Enable volume normalisation
