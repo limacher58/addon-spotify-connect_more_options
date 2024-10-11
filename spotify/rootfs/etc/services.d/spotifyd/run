@@ -8,11 +8,21 @@ declare bitrate
 declare name
 declare password
 declare username
+declare cache_size_limit
+declare disable_audio_cache
+declare device_type
+declare backend
+declare device
+declare format
+declare dither
+declare initial_volume
+declare enable_volume_normalisation
+declare autoplay
 
 bashio::log.info 'Starting the Spotify daemon...'
 
 # Bitrate
-options+=(--bitrate $(bashio::config 'bitrate'))
+options+=(--bitrate "$(bashio::config 'bitrate')")
 
 # Device name
 name=$(bashio::config 'name')
@@ -29,12 +39,66 @@ if bashio::config.has_value 'username'; then
     options+=(--password "${password}")
 fi
 
-# Save writes
-options+=(--disable-audio-cache)
+# Cache size limit
+if bashio::config.has_value 'cache-size-limit'; then
+    cache_size_limit=$(bashio::config 'cache-size-limit')
+    options+=(--cache-size-limit "${cache_size_limit}")
+fi
+
+# Disable audio cache
+if bashio::config.has_value 'disable-audio-cache' && bashio::config.true 'disable-audio-cache'; then
+    options+=(--disable-audio-cache)
+fi
+
+# Device type
+if bashio::config.has_value 'device-type'; then
+    device_type=$(bashio::config 'device-type')
+    options+=(--device-type "${device_type}")
+fi
+
+# Backend
+if bashio::config.has_value 'backend'; then
+    backend=$(bashio::config 'backend')
+    options+=(--backend "${backend}")
+fi
+
+# Device
+if bashio::config.has_value 'device'; then
+    device=$(bashio::config 'device')
+    options+=(--device "${device}")
+fi
+
+# Format
+if bashio::config.has_value 'format'; then
+    format=$(bashio::config 'format')
+    options+=(--format "${format}")
+fi
+
+# Dither
+if bashio::config.has_value 'dither'; then
+    dither=$(bashio::config 'dither')
+    options+=(--dither "${dither}")
+fi
+
+# Initial volume
+if bashio::config.has_value 'initial-volume'; then
+    initial_volume=$(bashio::config 'initial-volume')
+    options+=(--initial-volume "${initial_volume}")
+fi
+
+# Enable volume normalisation
+if bashio::config.has_value 'enable-volume-normalisation' && bashio::config.true 'enable-volume-normalisation'; then
+    options+=(--enable-volume-normalisation)
+fi
+
+# Autoplay
+if bashio::config.has_value 'autoplay' && bashio::config.true 'autoplay'; then
+    options+=(--autoplay)
+fi
 
 # Are we running in debug mode?
 if bashio::debug; then
-  options+=(--verbose)
+    options+=(--verbose)
 fi
 
 # Run librespot
