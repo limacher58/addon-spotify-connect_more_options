@@ -22,16 +22,12 @@ declare autoplay
 bashio::log.info 'Starting the Spotify daemon...'
 
 # Bitrate
-if bashio::config.has_value 'bitrate'; then
-    bitrate=$(bashio::config 'bitrate')
-    options+=(--bitrate "${bitrate}")
-fi
+bitrate=$(bashio::config 'bitrate')
+options+=(--bitrate "${bitrate}")
 
 # Device name
-if bashio::config.has_value 'name'; then
-    name=$(bashio::config 'name')
-    options+=(--name "${name}")
-fi
+name=$(bashio::config 'name')
+options+=(--name "${name}")
 
 # Username / password
 if bashio::config.has_value 'username'; then
@@ -43,69 +39,55 @@ if bashio::config.has_value 'username'; then
 fi
 
 # Cache size limit
-if bashio::config.has_value 'cache-size-limit'; then
-    cache_size_limit=$(bashio::config 'cache-size-limit')
-    if [[ "$cache_size_limit" =~ ^[0-9]+[KMG]?$ ]]; then
-        options+=(--cache-size-limit "${cache_size_limit}")
-    else
-        bashio::log.warning "Invalid cache-size-limit, using default of 1M"
-        options+=(--cache-size-limit "1M")
-    fi
+cache_size_limit=$(bashio::config 'cache-size-limit')
+if [[ "$cache_size_limit" =~ ^[0-9]+[KMG]?$ ]]; then
+    options+=(--cache-size-limit "${cache_size_limit}")
+else
+    bashio::log.warning "Invalid cache-size-limit format, using default of 1M"
+    options+=(--cache-size-limit "1M")
 fi
 
 # Disable audio cache
-if bashio::config.has_value 'disable-audio-cache' && bashio::config.true 'disable-audio-cache'; then
+if bashio::config.true 'disable-audio-cache'; then
     options+=(--disable-audio-cache)
 fi
 
 # Device type
-if bashio::config.has_value 'device-type'; then
-    device_type=$(bashio::config 'device-type')
-    options+=(--device-type "${device_type}")
-fi
+device_type=$(bashio::config 'device-type')
+options+=(--device-type "${device_type}")
 
 # Backend
-if bashio::config.has_value 'backend'; then
-    backend=$(bashio::config 'backend')
-    options+=(--backend "${backend}")
-fi
+backend=$(bashio::config 'backend')
+options+=(--backend "${backend}")
 
 # Device
-if bashio::config.has_value 'device'; then
-    device=$(bashio::config 'device')
-    options+=(--device "${device}")
-fi
+device=$(bashio::config 'device')
+options+=(--device "${device}")
 
 # Format
-if bashio::config.has_value 'format'; then
-    format=$(bashio::config 'format')
-    options+=(--format "${format}")
-fi
+format=$(bashio::config 'format')
+options+=(--format "${format}")
 
 # Dither
-if bashio::config.has_value 'dither'; then
-    dither=$(bashio::config 'dither')
-    options+=(--dither "${dither}")
-fi
+dither=$(bashio::config 'dither')
+options+=(--dither "${dither}")
 
 # Initial volume
-if bashio::config.has_value 'initial-volume'; then
-    initial_volume=$(bashio::config 'initial-volume')
-    if [[ "$initial_volume" =~ ^[0-9]+$ ]]; then
-        options+=(--initial-volume "${initial_volume}")
-    else
-        bashio::log.warning "Invalid initial-volume, using default of 50"
-        options+=(--initial-volume "50")
-    fi
+initial_volume=$(bashio::config 'initial-volume')
+if [[ "$initial_volume" =~ ^[0-9]+$ ]]; then
+    options+=(--initial-volume "${initial_volume}")
+else
+    bashio::log.warning "Invalid initial-volume, using default of 50"
+    options+=(--initial-volume "50")
 fi
 
 # Enable volume normalisation
-if bashio::config.has_value 'enable-volume-normalisation' && bashio::config.true 'enable-volume-normalisation'; then
+if bashio::config.true 'enable-volume-normalisation'; then
     options+=(--enable-volume-normalisation)
 fi
 
 # Autoplay
-if bashio::config.has_value 'autoplay' && bashio::config.true 'autoplay'; then
+if bashio::config.true 'autoplay'; then
     options+=(--autoplay)
 fi
 
@@ -113,6 +95,9 @@ fi
 if bashio::debug; then
     options+=(--verbose)
 fi
+
+# Log the final options for debugging purposes
+bashio::log.info "Running librespot with options: ${options[*]}"
 
 # Run librespot
 exec librespot "${options[@]}"
