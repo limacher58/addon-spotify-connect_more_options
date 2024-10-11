@@ -20,7 +20,7 @@ options:
   backend: pulseaudio
   device: default
   format: S16
-  dither: auto
+  dither: none
   initial-volume: 50
   enable-volume-normalisation: true
   autoplay: true
@@ -36,7 +36,7 @@ schema:
   backend: list(pulseaudio|pipe) # Restricted to valid backend types
   device: str
   format: list(F64|F32|S32|S24|S24_3|S16)
-  dither: list(none|auto|triangular|gpdf|tpdf|tpdf_hp)
+  dither: list(none|triangular|gpdf|tpdf|tpdf_hp)
   initial-volume: int
   enable-volume-normalisation: bool
   autoplay: bool
