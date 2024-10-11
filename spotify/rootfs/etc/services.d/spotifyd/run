@@ -12,10 +12,7 @@ declare cache_size_limit
 declare cache_path
 declare disable_audio_cache
 declare device_type
-declare backend
-declare device
 declare format
-declare dither
 declare initial_volume
 declare enable_volume_normalisation
 declare autoplay
@@ -66,21 +63,9 @@ if [[ -z "${device_type}" ]]; then
 fi
 options+=(--device-type "${device_type}")
 
-# Backend
-backend=$(bashio::config 'backend')
-options+=(--backend "${backend}")
-
-# Device
-device=$(bashio::config 'device')
-options+=(--device "${device}")
-
 # Format
 format=$(bashio::config 'format')
 options+=(--format "${format}")
-
-# Dither
-dither=$(bashio::config 'dither')
-options+=(--dither "${dither}")
 
 # Initial volume
 initial_volume=$(bashio::config 'initial-volume')
