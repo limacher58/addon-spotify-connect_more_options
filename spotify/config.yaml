@@ -17,10 +17,7 @@ options:
   cache-size-limit: 1M # Size can be specified with suffixes like K, M, or G
   disable-audio-cache: false
   device-type: speaker
-  backend: pulseaudio
-  device: default
   format: S16
-  dither: none
   initial-volume: 50
   enable-volume-normalisation: true
   autoplay: true
@@ -33,10 +30,7 @@ schema:
   cache-size-limit: str # Allows for values like "1M", "512K", etc.
   disable-audio-cache: bool
   device-type: list(computer|tablet|smartphone|speaker|tv|avr|stb|audiodongle|gameconsole|castaudio|castvideo|automobile|smartwatch|chromebook|carthing|homething)
-  backend: list(pulseaudio|pipe) # Restricted to valid backend types
-  device: str
   format: list(F64|F32|S32|S24|S24_3|S16)
-  dither: list(none|triangular|gpdf|tpdf|tpdf_hp)
   initial-volume: int
   enable-volume-normalisation: bool
   autoplay: bool
