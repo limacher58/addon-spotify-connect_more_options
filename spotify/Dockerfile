@@ -21,7 +21,7 @@ RUN \
         pulseaudio \
     \
     # Install librespot from the stable release tag
-    && cargo install --locked --git https://github.com/librespot-org/librespot.git --tag v0.4.2 --no-default-features --features pulseaudio-backend --root /usr --bin librespot --verbose \
+    && cargo install --locked --git https://github.com/librespot-org/librespot.git --tag v0.6.0 --no-default-features --features pulseaudio-backend --root /usr --bin librespot --verbose \
     \
     && apk del --no-cache --purge .build-dependencies \
     && rm -fr \
