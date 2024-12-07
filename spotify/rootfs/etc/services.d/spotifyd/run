@@ -70,15 +70,12 @@ options+=(--format "${format}")
 # Initial volume
 initial_volume=$(bashio::config 'initial-volume')
 if [[ "$initial_volume" =~ ^[0-9]+$ ]]; then
+    options+=(--enable-volume-normalisation)
     options+=(--initial-volume "${initial_volume}")
 else
     bashio::log.warning "Invalid initial-volume, using default of 50"
-    options+=(--initial-volume "50")
-fi
-
-# Enable volume normalisation
-if bashio::config.true 'enable-volume-normalisation'; then
     options+=(--enable-volume-normalisation)
+    options+=(--initial-volume "50")
 fi
 
 # Autoplay
